@@ -1,42 +1,57 @@
 import React from 'react';
-import logo from './logo.svg';
+import {connect} from 'react-redux'
 import './App.css';
-import {createStore} from 'redux'
-import { stat } from 'fs';
-import Counter from './counter'
-import { Provider } from 'react-redux';
+import {createTask,editTask} from './actions/index'
+ 
 
-
-const initialState={
-  count:0
-}
-function reducer(state=initialState,action){
-  switch(action.type){
-    case 'INCREMENT':
-    return {count:state.count+1}
+import TaskPage from './components/TaskPage'
+// const initialState={
+//   count:0
+// }
+// function reducer(state=initialState,action){
+//   switch(action.type){
+//     case 'INCREMENT':
+//     return {count:state.count+1}
   
-    case 'DECREMENT':
-  return {
-    count:state.count-1
-  }
+//     case 'DECREMENT':
+//   return {
+//     count:state.count-1
+//   }
 
-  default:
-  return state
-}
-  }
+//   default:
+//   return state
+// }
+//   }
 
-const store=createStore(reducer)
+// const store=createStore(reducer)
+
+
 
  class App extends React.Component{
+
+  onCreateTask=({title,description})=>{
+    this.props.dispatch(createTask({title,description}))
+    
+  }
+
+  onStatusChange=(id,status)=>{
+    this.props.dispatch(editTask(id,{status}))
+  }
   render(){
+    
     return(
-      <Provider store={store}>
-      <Counter/>
-      </Provider>
+    
+      <div className="main-content">
+      <TaskPage tasks={this.props.tasks} onCreateTask={this.onCreateTask} onStatusChange={this.onStatusChange}/></div>
       
     )
   }
 }
 
+function mapStateToProps(state){
+  return {
+    tasks:state.tasks
+  }
+}
 
-export default App;
+export default connect(mapStateToProps)(App)
