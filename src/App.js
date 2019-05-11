@@ -35,7 +35,8 @@ import TaskPage from './components/TaskPage'
   }
 
   onStatusChange=(id,status)=>{
-    this.props.dispatch(editTask(id,{status}))
+    console.log(id,status)
+    this.props.dispatch(editTask(id,status))
   }
   render(){
     

@@ -16,7 +16,7 @@ export function createTask({title,description}){
     }
 }
 
-export function editTask(id,param={}){
+export function editTask(id,param){
     return{
         type:'EDIT_TASK',
         payload:{

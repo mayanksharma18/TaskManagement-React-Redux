@@ -7,8 +7,8 @@ import { Provider } from 'react-redux';
 import {createStore,applyMiddleware} from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import tasks from './reducers';
-
-const store=createStore(tasks)
+import logger from 'redux-logger'
+const store=createStore(tasks, applyMiddleware(logger))
 
 ReactDOM.render(<Provider store={store}>
 
