@@ -1,81 +1,139 @@
-import React,{Component} from 'react';
-import TaskList from './TaskList'
-import { stat } from 'fs';
+import React from "react";
+import {
+  Card,
+  Typography,
+  Button,
+  CardContent,
+  CssBaseline,
+  FormControl,
+  Input,
+  InputLabel,
+  Paper
+} from "@material-ui/core/";
+import withStyles from "@material-ui/core/styles/withStyles";
+import TaskList from "./TaskList";
 
-
-
-const TASK_STATUSES=['Unstarted','In Progress','Completed'];
-
-class TasksPage extends Component{
-
-    state={
-        title:"",
-        description:"",
-        showNewForm:false
+const styles = theme => ({
+  main: {
+    width: "auto",
+    display: "block", // Fix IE 11 issue.
+    marginLeft: theme.spacing.unit * 3,
+    marginRight: theme.spacing.unit * 3,
+    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
+      width: 400,
+      marginLeft: "auto",
+      marginRight: "auto"
     }
-    handleChange=(event)=>{
-        let key=event.target.id
-        this.setState({
-       [key]:event.target.value })
-    }
-    toggleForm = () =>{
-        
-       this.setState({
-           showNewForm:!this.state.showNewForm
-       })
-    }
-    resetForm(){
-        this.setState({
-            title:"",
-            description:"",
-            showNewForm:false
-        })
-    }
-    onCreate=(e)=>{
-     e.preventDefault();
-     this.props.onCreateTask(
-         {
-             title:this.state.title,
-             description:this.state.description
-         }
-     ) ;   
-     this.resetForm() 
-    }
-
-  renderTaskLists(){
-   const {tasks}=this.props;
-   console.log(tasks)
-   return TASK_STATUSES.map(status=>{
-       const statusTasks=tasks.filter(task=>task.status===status);
-       return <TaskList key={status} status={status} tasks={statusTasks} onStatusChange={this.props.onStatusChange}  />
-   })
+  },
+  paper: {
+    marginTop: theme.spacing.unit * 8,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
+      .spacing.unit * 3}px`
+  },
+  avatar: {
+    margin: theme.spacing.unit,
+    backgroundColor: theme.palette.secondary.main
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing.unit
+  },
+  submit: {
+    marginTop: theme.spacing.unit * 3
   }
+});
 
-  render(){
-      return(
-          <div className="task-list">
-          <div className='task-like-header'>
-          <button onClick={this.toggleForm} className="button button-default">
-          +New Task
-          </button>
-          </div>
-          <div>
-           {this.state.showNewForm&&(
-              <form onSubmit={this.onCreate}>
-              <input onChange={this.handleChange} id="title"className="full-width-input" type="text" placeholder="title" />
-              <input onChange={this.handleChange} id="description" className="full-widht-input" type="text" placeholder="description"/>
-              <button className="button"type="submit">Save</button>
-              </form> 
-           )}   
-          </div>
-          <div className="task-lists">
-          {this.renderTaskLists()}
-          </div>
-          
-          </div>
-      )
+class TaskPage extends React.Component {
+  state = {
+    title: "",
+    description: "",
+    addToggle: false
+  };
+  handleChange = e => {
+    let key = e.target.id;
+    this.setState({
+      [key]: e.target.value
+    });
+  };
+  showForm = () =>
+    this.setState({
+      addToggle: !this.state.addToggle
+    });
+
+  resetForm = () => {
+    this.setState({
+      title: "",
+      description: "",
+      addToggle: false
+    });
+  };
+
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.onCreate({
+      title: this.state.title,
+      description: this.state.description
+    });
+    this.resetForm();
+  };
+  
+
+  render() {
+  
+    const { classes } = this.props;
+    return (
+      <div>
+        <main className={classes.main}>
+          <CssBaseline />
+          <Paper className={classes.paper}>
+            <Button onClick={this.showForm} variant="contained" color="primary">
+              <Typography component="h1" variant="h5">
+                +Add Task
+              </Typography>
+            </Button>
+            {this.state.addToggle && (
+              <form onSubmit={this.handleSubmit} className={classes.form}>
+                <FormControl margin="normal" required fullWidth>
+                  <InputLabel htmlFor="email">Title</InputLabel>
+                  <Input
+                    onChange={this.handleChange}
+                    id="title"
+                    name="title"
+                    autoComplete="title"
+                    autoFocus
+                  />
+                </FormControl>
+                <FormControl margin="normal" required fullWidth>
+                  <InputLabel htmlFor="password">Description</InputLabel>
+                  <Input
+                    onChange={this.handleChange}
+                    name="description"
+                    type="text"
+                    id="description"
+                    autoComplete="description"
+                  />
+                </FormControl>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Save
+                </Button>
+              </form>
+            )}
+          </Paper>
+        </main>
+        <div>
+          <TaskList onEdit={this.props.onEdit} tasks={this.props.tasks} />
+        </div>
+      </div>
+    );
   }
-
 }
 
-export default TasksPage;
+export default withStyles(styles)(TaskPage);
