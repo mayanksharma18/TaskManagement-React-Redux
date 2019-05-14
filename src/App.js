@@ -1,58 +1,36 @@
-import React from 'react';
-import {connect} from 'react-redux'
-import './App.css';
+import React from "react";
+import TaskPage from "./components/TaskPage";
+
+import { connect } from "react-redux";
 import {createTask,editTask} from './actions/index'
- 
 
-import TaskPage from './components/TaskPage'
-// const initialState={
-//   count:0
-// }
-// function reducer(state=initialState,action){
-//   switch(action.type){
-//     case 'INCREMENT':
-//     return {count:state.count+1}
-  
-//     case 'DECREMENT':
-//   return {
-//     count:state.count-1
-//   }
-
-//   default:
-//   return state
-// }
-//   }
-
-// const store=createStore(reducer)
-
-
-
- class App extends React.Component{
-
-  onCreateTask=({title,description})=>{
+class App extends React.Component {
+  onCreate=({title,description})=>{
+    
     this.props.dispatch(createTask({title,description}))
-    
   }
-
-  onStatusChange=(id,status)=>{
+  onEdit=(e)=>{
+   let id = e.target.id
+    let status = e.target.value
     console.log(id,status)
-    this.props.dispatch(editTask(id,status))
+
+   this.props.dispatch(editTask({id,status}))
   }
-  render(){
-    
-    return(
-    
-      <div className="main-content">
-      <TaskPage tasks={this.props.tasks} onCreateTask={this.onCreateTask} onStatusChange={this.onStatusChange}/></div>
-      
-    )
+  render() {
+    // console.log(this.props.tasks)
+    return (
+      <div>
+        <h1>Hello</h1>
+        <TaskPage onCreate={this.onCreate} onEdit={this.onEdit}tasks={this.props.tasks} />
+      </div>
+    );
   }
 }
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
   return {
-    tasks:state.tasks
-  }
+    tasks: state.tasks
+  };
 }
 
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps)(App);
