@@ -38,8 +38,8 @@ const styles =theme=>( {
 const status = ["Unstarted", "In Progress", "Completed"];
 
 function TaskList(props) {
-  console.log(props.tasks)
   const { classes } = props;
+  console.log(props)
   return (
     <div className={classes.root}>
      <Grid  container className={classes.root} spacing="30">
@@ -54,7 +54,7 @@ function TaskList(props) {
             </Typography>
             <hr/>
             <Typography component="p">
-            <Task onEdit={props.onEdit}tasks={props.tasks} status={item}/>
+            <Task  tasks={props.tasks} onEdit={props.onEdit} status={item}/>
             </Typography>
           </CardContent>
         </Card>

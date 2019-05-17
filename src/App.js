@@ -3,6 +3,7 @@ import TaskPage from "./components/TaskPage";
 
 import { connect } from "react-redux";
 import {createTask,editTask} from './actions/index'
+import { clear } from "redux-localstorage-simple";
 
 class App extends React.Component {
   onCreate=({title,description})=>{
@@ -16,12 +17,14 @@ class App extends React.Component {
 
    this.props.dispatch(editTask({id,status}))
   }
+ 
   render() {
     // console.log(this.props.tasks)
     return (
       <div>
         <h1>Hello</h1>
         <TaskPage onCreate={this.onCreate} onEdit={this.onEdit}tasks={this.props.tasks} />
+       
       </div>
     );
   }

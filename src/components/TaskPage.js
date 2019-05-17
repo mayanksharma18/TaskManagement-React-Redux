@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core/";
 import withStyles from "@material-ui/core/styles/withStyles";
 import TaskList from "./TaskList";
-
+import { clear } from "redux-localstorage-simple";
 const styles = theme => ({
   main: {
     width: "auto",
@@ -79,7 +79,10 @@ class TaskPage extends React.Component {
     });
     this.resetForm();
   };
-  
+  Clear=()=>{
+
+    clear()
+  }
 
   render() {
   
@@ -131,9 +134,20 @@ class TaskPage extends React.Component {
         <div>
           <TaskList onEdit={this.props.onEdit} tasks={this.props.tasks} />
         </div>
+        <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={this.Clear}
+                >
+                  Reset
+                </Button>
       </div>
     );
   }
 }
 
 export default withStyles(styles)(TaskPage);
+
+

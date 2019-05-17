@@ -9,9 +9,11 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import logger from 'redux-logger'
 import task from './reducers/index'
 import { save, load } from "redux-localstorage-simple"
+import {rootReducer} from "./reducers/rootreducers"
 
+const middleware = [logger ,save()]
 
-const store=createStore(task,load(),applyMiddleware(logger,save()));
+const store=createStore(rootReducer,load(),composeWithDevTools(applyMiddleware(...middleware )) );
 console.log(store)
 
 ReactDOM.render(

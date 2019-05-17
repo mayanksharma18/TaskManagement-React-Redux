@@ -1,11 +1,10 @@
 
-let id=0;
+let id=1;
 
 function uniqueID(){
-    return ++id
+    return id++
 }
     export  function createTask({title,description}){
-        console.log("in reducer")
         return {
             type:'CREATE_TASK',
             payload:{
